@@ -10,6 +10,7 @@ const {
   loginUser,
 } = require("../controllers/authControllers.js");
 const { fieldValidator } = require("../middlewares/fieldValidator.js");
+const { tokenRenewer } = require("../middlewares/tokenRenewer.js");
 
 router.post(
   "/new",
@@ -42,6 +43,6 @@ router.post(
   loginUser
 );
 
-router.get("/renew", renewToken);
+router.get("/renew", tokenRenewer, renewToken);
 
 module.exports = router;
