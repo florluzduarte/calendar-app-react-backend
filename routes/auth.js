@@ -4,16 +4,18 @@
 const { Router } = require("express");
 const router = Router();
 const { check } = require("express-validator");
-
 const {
   createUser,
   renewToken,
   loginUser,
 } = require("../controllers/authControllers.js");
+const { fieldValidator } = require("../middlewares/fieldValidator.js");
+const { tokenRenewer } = require("../middlewares/tokenRenewer.js");
 
 router.post(
   "/new",
   [
+    //Middlewares
     check("name", "El nombre es obligatorio").not().isEmpty(),
     check("name", "El nombre debe tener al menos 2 caracteres").isLength({
       min: 2,
@@ -23,6 +25,7 @@ router.post(
       "password",
       "La contraseña debe tener al menos 6 caracteres"
     ).isLength({ min: 6 }),
+    fieldValidator,
   ],
   createUser
 );
@@ -35,10 +38,11 @@ router.post(
       "password",
       "La contraseña debe tener al menos 6 caracteres"
     ).isLength({ min: 6 }),
+    fieldValidator,
   ],
   loginUser
 );
 
-router.get("/renew", renewToken);
+router.get("/renew", tokenRenewer, renewToken);
 
 module.exports = router;
