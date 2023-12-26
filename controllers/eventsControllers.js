@@ -1,13 +1,20 @@
 const { response } = require("express");
 const Event = require("../models/Event");
 
-const getEvents = async (res = response) => {
-  const events = await Event.find().populate("user", "name");
-
-  res.json({
-    ok: true,
-    events,
-  });
+const getEvents = async (req, res = response) => {
+  try {
+    const events = await Event.find().populate("user", "name");
+    res.json({
+      ok: true,
+      events,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      ok: false,
+      msg: "Comuníquese con el administrador",
+    });
+  }
 };
 
 const createEvent = async (req, res = response) => {
@@ -104,11 +111,6 @@ const deleteEvent = async (req, res = response) => {
       msg: "Comuníquese con el administrador",
     });
   }
-
-  res.json({
-    ok: true,
-    msg: "deleteEvent",
-  });
 };
 
 module.exports = {
