@@ -111,11 +111,6 @@ const deleteEvent = async (req, res = response) => {
       msg: "Comuníquese con el administrador",
     });
   }
-
-  res.json({
-    ok: true,
-    msg: "deleteEvent",
-  });
 };
 
 module.exports = {
